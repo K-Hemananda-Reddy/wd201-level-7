@@ -1,0 +1,8 @@
+body {
+  background-color: rgb(117, 225, 246);
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+table th,td{
+  padding: 4px;
+}
