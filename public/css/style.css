@@ -1,6 +1,6 @@
 body {
-font-family:'Times New Roman', 'Arial Narrow', Arial, sans-serif;
-background: rgb(0, 176, 235);
+font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+background: rgb(255, 107, 107);
 }
 
 .Todo-Item:hover .trash-icon{

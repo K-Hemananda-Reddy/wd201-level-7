@@ -22,23 +22,23 @@ const { Todo } = require("./models");
 app.set("view engine", "ejs");
 
 app.get("/", async (request, response) => {
-  const fetching_all_todos = await Todo.getAllTodos();  
-  const Todos_which_are_completed = await Todo.completedItemsAre();
-  const Todos_urgently_tobe_done = await Todo.overdue();
-  const To_be_done_later = await Todo.dueLater();
-  const To_be_done_today = await Todo.dueToday();
+  const allTodosAre = await Todo.getAllTodos();  
+  const completedItemsIs = await Todo.completedItemsAre();
+  const overdue = await Todo.overdue();
+  const dueLater = await Todo.dueLater();
+  const dueToday = await Todo.dueToday();
   if (request.accepts("html")) {
     response.render("index", {
       title: "Todo's Manager",
-      fetching_all_todos,
-      Todos_urgently_tobe_done,
-      To_be_done_later,
-      To_be_done_today,
-      Todos_which_are_completed,
+      allTodosAre,
+      overdue,
+      dueLater,
+      dueToday,
+      completedItemsIs,
       csrfToken: request.csrfToken(),
     });
   } else {
-    response.json({Todos_urgently_tobe_done, To_be_done_later, To_be_done_today, Todos_which_are_completed});
+    response.json({overdue, dueLater, dueToday, completedItemsIs});
   }
 });
 
@@ -92,7 +92,7 @@ app.put("/todos/:id", async (request, response) => {
   }
 });
 app.delete("/todos/:id", async (request, response) => {
-  console.log("Todo being deleted with a particular id..", request.params.id);
+  console.log("Todo being deleted with a particular id...", request.params.id);
   try {
     await Todo.remove(request.params.id);
     return response.json({ success: true });

@@ -20,11 +20,11 @@ describe("Todo being tested ", () => {
     server.close();
   });
 
-  test("New todo being created ", async () => {
+  test("Creating new todo: ", async () => {
     const res = await agent.get("/");
     const csrfToken = extractCsrfToken(res);
     const response = await agent.post("/todos").send({
-      title: "Complete UML assignment",
+      title: "Complete DBMS assignment",
       dueDate: new Date().toISOString(),
       completed: false,
       _csrf: csrfToken,
@@ -32,11 +32,11 @@ describe("Todo being tested ", () => {
     expect(response.statusCode).toBe(422);
   });
 
-  test("given todos being updated ", async () => {
+  test("Update given list of todos as (completed): ", async () => {
     const res = await agent.get("/");
     const csrfToken = extractCsrfToken(res);
     await agent.post("/todos").send({
-      title: "Prepare for lab internals",
+      title: "Complete DAA assignment",
       dueDate: new Date().toISOString(),
       completed: false,
       _csrf: csrfToken,
@@ -60,11 +60,11 @@ describe("Todo being tested ", () => {
     expect(parsedUpdateResponse2.completed).toBe(false);
   });
 
-  test("Marking todos which are completed", async () => {
+  test("Mark completed todo using pointer", async () => {
     let res = await agent.get("/");
     let csrfToken = extractCsrfToken(res);
     await agent.post("/todos").send({
-      title: "Complete the home work",
+      title: "Complete the CAMP assignment",
       dueDate: new Date().toLocaleString("en-CA"),
       completed: false,
       _csrf: csrfToken,
@@ -86,7 +86,7 @@ describe("Todo being tested ", () => {
     expect(parsedUpdateResponse.completed).toBe(true);
   });
 
-  test("Marking the incomplete todos", async () => {
+  test("Mark as incomplete using given ID", async () => {
     let res = await agent.get("/");
     let csrfToken = extractCsrfToken(res);
     await agent.post("/todos").send({
@@ -118,11 +118,11 @@ describe("Todo being tested ", () => {
   });
 
  
-  test("Given todo being deleted", async () => {
+  test("Delete todo using ID", async () => {
     let res = await agent.get("/");
     let csrfToken = extractCsrfToken(res);
     await agent.post("/todos").send({
-      title: "Exams completed",
+      title: "Exams done",
       dueDate: new Date().toISOString(),
       completed: false,
       _csrf: csrfToken,
