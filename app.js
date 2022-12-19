@@ -1,6 +1,6 @@
 const express = require("express");
 var csrf = require("tiny-csrf");
-//csrf isnt there so used tiny-csrf
+
 const app = express();
 const bodyParser = require("body-parser");
 var cookieParser = require("cookie-parser");
@@ -11,16 +11,13 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser("This is a secret string!!!"));
 app.use(csrf("this_should_be_32_character_long", ["POST", "PUT", "DELETE"]));
-//it can be any 32 character
 
-// eslint-disable-next-line no-unused-vars
-// const {todo} = require("./models");
-
+//configuring models
 const { Todo } = require("./models");
 
 
 app.set("view engine", "ejs");
-
+//getting all the data from the database
 app.get("/", async (request, response) => {
   const allTodosAre = await Todo.getAllTodos();  
   const completedItemsIs = await Todo.completedItemsAre();
@@ -41,9 +38,9 @@ app.get("/", async (request, response) => {
     response.json({overdue, dueLater, dueToday, completedItemsIs});
   }
 });
-
+//finding all the todos and converting into json
 app.get("/todos", async (request, response) => {
-  // defining route to displaying message
+
   console.log("Todo list");
   try {
     const todoslist = await Todo.findAll();
@@ -53,7 +50,7 @@ app.get("/todos", async (request, response) => {
     return response.status(422).json(error);
   }
 });
-
+//a function to get each todo
 app.get("/todos/:id", async function (request, response) {
   try {
     const todo = await Todo.findByPk(request.params.id);
@@ -63,23 +60,23 @@ app.get("/todos/:id", async function (request, response) {
     return response.status(422).json(error);
   }
 });
-
+//function for adding a todo
 app.post("/todos", async (request, response) => {
   try {
-    // eslint-disable-next-line no-unused-vars
+ 
       await Todo.addaTodo({
       title: request.body.title,
       dueDate: request.body.dueDate,
       completed: false,
     });
-    //redirect to Main URL
+   
     return response.redirect("/");
   } catch (err1) {
     console.log(err1);
     return response.status(422).json(err1);
   }
 });
-
+//setting completion status for the todo
 app.put("/todos/:id", async (request, response) => {
   console.log("Todo is completed : ", request.params.id);
   const todo = await Todo.findByPk(request.params.id);
@@ -91,8 +88,10 @@ app.put("/todos/:id", async (request, response) => {
     return response.status(422).json(err2);
   }
 });
+
+// a function to delete the todos
 app.delete("/todos/:id", async (request, response) => {
-  console.log("Todo being deleted with a particular id...", request.params.id);
+  console.log("Todo being deleted with a particular id..", request.params.id);
   try {
     await Todo.remove(request.params.id);
     return response.json({ success: true });

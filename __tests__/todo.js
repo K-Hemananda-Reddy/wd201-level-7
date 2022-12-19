@@ -9,7 +9,7 @@ function extractCsrfToken(response) {
   return $("[name=_csrf]").val();
 }
 
-describe("Todo being tested ", () => {
+describe("Testing todo", () => {
   beforeAll(async () => {
     await db.sequelize.sync({ force: true });
     server = app.listen(4000, () => {});
@@ -20,11 +20,11 @@ describe("Todo being tested ", () => {
     server.close();
   });
 
-  test("Creating new todo: ", async () => {
+  test("New todo being created ", async () => {
     const res = await agent.get("/");
     const csrfToken = extractCsrfToken(res);
     const response = await agent.post("/todos").send({
-      title: "Complete DBMS assignment",
+      title: "Complete DCCN assignment",
       dueDate: new Date().toISOString(),
       completed: false,
       _csrf: csrfToken,
@@ -32,11 +32,11 @@ describe("Todo being tested ", () => {
     expect(response.statusCode).toBe(422);
   });
 
-  test("Update given list of todos as (completed): ", async () => {
+  test("todos getting updated ", async () => {
     const res = await agent.get("/");
     const csrfToken = extractCsrfToken(res);
     await agent.post("/todos").send({
-      title: "Complete DAA assignment",
+      title: "Dont prepare and fail",
       dueDate: new Date().toISOString(),
       completed: false,
       _csrf: csrfToken,
@@ -60,11 +60,11 @@ describe("Todo being tested ", () => {
     expect(parsedUpdateResponse2.completed).toBe(false);
   });
 
-  test("Mark completed todo using pointer", async () => {
+  test("using pointer complete the task", async () => {
     let res = await agent.get("/");
     let csrfToken = extractCsrfToken(res);
     await agent.post("/todos").send({
-      title: "Complete the CAMP assignment",
+      title: "Complete the home work",
       dueDate: new Date().toLocaleString("en-CA"),
       completed: false,
       _csrf: csrfToken,
@@ -86,11 +86,11 @@ describe("Todo being tested ", () => {
     expect(parsedUpdateResponse.completed).toBe(true);
   });
 
-  test("Mark as incomplete using given ID", async () => {
+  test("incomplete todos being markked using id", async () => {
     let res = await agent.get("/");
     let csrfToken = extractCsrfToken(res);
     await agent.post("/todos").send({
-      title: "Incomplete Testing",
+      title: "Testing is incomplete",
       dueDate: new Date().toISOString(),
       completed: true,
       _csrf: csrfToken,
@@ -118,11 +118,11 @@ describe("Todo being tested ", () => {
   });
 
  
-  test("Delete todo using ID", async () => {
+  test("Todo being deleted", async () => {
     let res = await agent.get("/");
     let csrfToken = extractCsrfToken(res);
     await agent.post("/todos").send({
-      title: "Exams done",
+      title: "Exams to begin and i will fail",
       dueDate: new Date().toISOString(),
       completed: false,
       _csrf: csrfToken,
