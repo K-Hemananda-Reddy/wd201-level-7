@@ -1,84 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width,initial-scale=1.0">
-        <meta name="csrf-token" content="<%= csrfToken %>">
-        <link href="./css/style.css" rel="stylesheet">
-        <title>Hemananda's Todo Manager</title>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link href="./css/style.css" rel="stylesheet">
-        <script>
-          var token = document.querySelector("meta[name='csrf-token']").getAttribute("content");
-         function deleteATodo(id) {
-        fetch(`/todos/${id}`,{
-          method: "delete",
-          headers: {"Content-Type":"application/json"},
-          body: JSON.stringify({
-            "_csrf":token
-          })
-        })
-         .then((res) => {
-          if (res.ok) {
-            window.location.reload();
-          }
-         })
-         .catch((err2) => console.log(err2));
-      }
-      function updateATodo (id)  {
-          const bool = document.querySelector(`#todos-checkbox-${id}`).checked
-          console.log(bool);
-          fetch(`/todos/${id}`, {
-            method: "PUT",
-            headers: {
-            "Content-Type": "application/json",
-            },
-            body : JSON.stringify({
-            _csrf : token,
-            completed : bool
-            })
-          })
-          .then((res) => {
-            if (res.ok) {
-              window.location.reload();
-            }
-          })
-          .catch((err1)=>{
-          console.log(err1);
-          })
-        };
-        </script>
-        <style>
-          body{
-            background-color: aqua;
-          }
-        </style>
-    </head>
-    <body>
-       <div class= "grid  grid-cols-6">
-        <div class="col-start-3 col-span-2">
-        <%- include("header.ejs") %> 
-        <form action="/todos" method="post">
-          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-           <!-- when our form gets submiited csrf token also gets submitted -->
-            <div class="flex gap-2 py-4">
-                <div class="flex-auto">
-                    <input style="background-color: aquamarine; color: blue; border: 3px solid white; border-radius: 5px;" type="text" name="title" placeholder="What's next" class="border border-black-300  text-gray-900 w-full p-2 text-sm" required />
-                </div>
-            <div class="flex-auto">
-                <input style="background-color: aquamarine; color: blue; border: 3px solid white; border-radius: 5px;" type="date" name="dueDate" class="border border-black-300 rounded text-gray-900 w-full p-2 text-sm leading-4 " required/>
-            </div>
-            <div class="flex-none">
-                <button type="submit" style="border: 3px solid white; border-radius: 5px;" class="bg-blue-600 text-white px-5 py-1.5 rounded font-medium mr-2 mb-2">Add</button>
-            </div>  
-            </div>
-        </form>
-        <%- include('todos.ejs', {title: "Overdue", data: overdue}) %>
-        <%- include('todos.ejs', {title: "Due Today", data: dueToday}) %>
-        <%- include('todos.ejs', {title: "Due Later", data: dueLater}) %>
-        <%- include('todos.ejs', {title: "Completed Items", data: completedItemsIs}) %>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<%= csrfToken %>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./css/style.css">
+    <title><%= title %></title>
+</head>
+<body>
+    <img src="bg1.png" alt="" style="position: absolute; top: 0px; width: 100%; height: 100%; z-index: -1;">
+    <div style="margin-top:150px ;" class="grid grid-cols-6">
+        <div style="text-align: center;" class="col-start-3 col-span-2">
+            <%- include('header.ejs') %>
+            <p style="margin-top:5px; font-weight: bolder;font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-size: larger;">Welcome to <span style="color:rgb(1, 155, 251)">To-Do Manager</span> </p>
+            <p style="margin-top:5px;font-weight: bolder;">New here? <br><br><a style="margin-top: 5px;border: 3px solid orange;font-weight: bolder;border-radius: 6px;background-color: blue; padding: 5px; color: white;"  href="/signup">Sign-up</a></p><br>
+            <p style="margin-top:5px; font-weight: bolder;">Already have an account? <br><br><a style="margin-top: 5px;border: 3px solid orange;font-weight: bolder;border-radius: 6px;background-color: blue; padding: 5px; color: white;"  href="/login">Sign-in</a></p>
+        </div>
     </div>
-</div>
-    </body>
+</body>
 </html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<%= csrfToken %>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./css/style.css">
+    <title><%=title%></title>
+</head>
+<body>
+    <img src="bg3.jpg" alt="" style="position: absolute; top: 0px; height: 100%;width: 100%;z-index: -1;">
+    <div style="margin-top: 50px;" class="grid grid-cols-6">
+        <div class="col-start-3 col-span-2">
+            <%- include('header.ejs') %>
+            <h2 style="margin-top: 20px; font-size: larger; font-weight: bolder;"> <span style="color: green;">Login</span>  to your account</h2>
+            <div>
+                <% if (messages && messages.error && messages.error.length > 0) { %>
+                    <% for(var i=0; i<messages.error.length; i++) { %>
+                        <p class="bg-red-100 my-3 list-none rounded px-4 py-2"><%= messages.error[i] %></p>
+                    <% } %>
+                <% } %>
+            </div>
+            <form action="/session" method="post">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+                <div class="py-4">
+                    <label style="font-weight: bolder; color: rgb(60, 0, 255);" for="email">Email ID: </label>
+                    <input style="background-color: black; color: aliceblue;" id="email" type="email" name="email" class="border border-color-300 text-gray-900 rounded p-2 w-full">
+                </div>
+                <div class="py-4">
+                    <label style="font-weight: bolder; color: rgb(60, 0, 255);" for="password">Password: </label>
+                    <input style="background-color: black; color: aliceblue;"  id="password" type="password" name="password" class="border border-color-300 text-gray-900 rounded p-2 w-full">
+                </div>
+                <button style="background-color: rgb(255, 10, 194);" type="submit" class="text-white  font-medium rounded px-5 py-2">Sign in</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
